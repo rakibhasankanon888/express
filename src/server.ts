@@ -1,5 +1,5 @@
 import express, { type Application, type Request, type Response } from "express"
-import {Pool} from "pg"
+import { Pool } from "pg"
 const app: Application = express()
 const port = 5000;
 
@@ -8,8 +8,30 @@ app.use(express.text());
 // app.use(express.urlencoded(extended : true));
 
 const pool = new Pool({
-    connectionString : "postgresql://neondb_owner:npg_opOPhI0bcuK5@ep-small-leaf-ap9jzmsa-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-})
+    connectionString: "postgres://106b733010d2fe90e9584aad6dd1f131575704a76f12b8c211a9f9e50aa7f226:sk_-669sV1mjLeF3fK4Fm13R@db.prisma.io:5432/postgres?sslmode=require"
+});
+
+const initDB = async () => {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS users(
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(20),
+            email VARCHAR(20) NOT NULL,
+            password VARCHAR(20) NOT NULL,
+            is_active BOOLEAN DEFAULT true,
+            age INT,
+
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW()
+            )
+            `);
+        console.log("Database connectied successfully!");
+    } catch (error) {
+        console.log(error);
+    }
+};
+initDB();
 
 app.get('/', (req: Request, res: Response) => {
     // res.send('Hello World');
