@@ -81,6 +81,22 @@ app.get('/api/users', async (req: Request, res: Response) => {
             error: error,
         })
     }
+});
+
+app.get('/api/users/:id', async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query(`
+            SELECT * FROM users WHERE id=$1
+            `, [id],);
+        res.status(200).json({
+            success: true,
+            message: "User retrived successfully!",
+            data: result.rows[0],
+        });
+    } catch (error) {
+
+    }
 })
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
