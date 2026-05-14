@@ -45,19 +45,21 @@ app.post("/", async (req: Request, res: Response) => {
     // console.log(req.body);
     const { name, email, password, age } = req.body;
 
-    const result = await pool.query(`
+    try {
+        const result = await pool.query(`
         INSERT INTO users(name,email,password,age) VALUES($1,$2,$3,$4) RETURNING *
         `, [name, email, password, age]);
-    // console.log(result);
-    res.status(201).json({
-        message: " User Created successfully",
-        data: {
-            name,
-            email,
-            password,
-            age,
-        },
-    });
+        // console.log(result);
+        res.status(201).json({
+            message: " User Created successfully!",
+            data: result.rows[0],
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            message: error.message,
+            error: error
+        });
+    }
 });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
