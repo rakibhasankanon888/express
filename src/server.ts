@@ -91,7 +91,7 @@ app.get('/api/users/:id', async (req: Request, res: Response) => {
             `, [id],);
 
         if (result.rows.length === 0) {
-            res.status(500).json({
+            res.status(404).json({
                 success: false,
                 message: "User not found",
                 data: {},
@@ -111,7 +111,15 @@ app.get('/api/users/:id', async (req: Request, res: Response) => {
         })
 
     }
-})
+});
+
+app.put('/api/users/:id', async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { name, password, age, is_active } = req.body;
+
+    console.log("Id : ", id);
+    console.log({ name, password, age, is_active })
+});
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
