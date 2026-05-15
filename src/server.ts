@@ -117,8 +117,15 @@ app.put('/api/users/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const { name, password, age, is_active } = req.body;
 
-    console.log("Id : ", id);
-    console.log({ name, password, age, is_active })
+    // console.log("Id : ", id);
+    // console.log({ name, password, age, is_active });
+
+    const result = await pool.query(`
+        UPDATE users SET name=$1,password=$2,age=$3,is_active=$4
+        `,
+        [name, password, age, is_active, id],
+    );
+    console.log(result);
 });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
