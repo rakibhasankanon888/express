@@ -155,6 +155,21 @@ app.put('/api/users/:id', async (req: Request, res: Response) => {
         })
     }
 });
+
+app.delete("/api/users/:id", async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query(`
+            
+            `)
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            error: error,
+        })
+    }
+})
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
