@@ -163,6 +163,13 @@ app.delete("/api/users/:id", async (req: Request, res: Response) => {
             DELETE FROM users WHERE id=$1
             `, [id],);
         console.log(result);
+        if (result.rowCount === 0) {
+            res.status(404).json({
+                success: false,
+                message: "User not found",
+
+            });
+        }
         res.status(200).json({
             success: true,
             message: "User deleted successfully!",
