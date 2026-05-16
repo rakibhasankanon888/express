@@ -160,8 +160,13 @@ app.delete("/api/users/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const result = await pool.query(`
-            
-            `)
+            DELETE FROM users WHERE id=$1
+            `, [id],);
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully!",
+            data: {},
+        });
     } catch (error: any) {
         res.status(500).json({
             success: false,
